@@ -1,0 +1,11 @@
+Match: id_match, equipe1_match, equipe2_match, kicekigagne_match, parent_match, type_match, score_match
+Jouer, 11 Match, 1N Tournoi
+Tournoi: id_tournoi, nom_tournoi, regle_tournoi
+
+pratiquer, 0N Activite, 11 Equipe
+Equipe: id_equipe, nom_equipe
+Participer, 0N Equipe, 2N Tournoi
+
+Activite: id_activite, nom_activite
+est_membre, 0N Participant, 0N Equipe
+Participant: id_participant, pseudo_participant, nom_participant, prenom_participant
