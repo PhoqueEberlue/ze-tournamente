@@ -2,15 +2,15 @@
 <?php
  class BDD {
 
-    private $host="localhost";
-    private $username="root";
-    private $pswd="";
-    private $db="z_tournament";
+    private $host;
+    private $username;
+    private $pswd;
+    private $db;
     private $conn;
 
 
     public function __construct($host,$username,$pswd,$db){
-        $this->conn=new mysqli($this->host, $this->username, $this->pswd, $this->db);
+        $this->conn=new mysqli($host, $username, $pswd, $db);
         if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
         }
