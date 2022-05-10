@@ -23,16 +23,17 @@
 
     }
 
+    public function insert($requete){
+        if ($this->conn->query($requete) === FALSE) {
+            echo "Error: " . $requete . "<br>" . $conn->error;
+          }
+    }
+
 }
 
 
 
-$bdd=new BDD("localhost","root","","z_tournament");
-$requete="SELECT * from activite";
 
-$res=$bdd->select($requete);
-
-var_dump($res);
 
 
 ?>

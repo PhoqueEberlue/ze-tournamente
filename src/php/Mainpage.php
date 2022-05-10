@@ -15,7 +15,7 @@
 <div id="contentlmao">
     <div id="main">
         <div id="menu">
-            <div><a href="" class="btn_menu">Ajouter Player</a></div>
+            <div><a href="src/php/form.php" class="btn_menu">Ajouter Player</a></div>
             <div><a href="" class="btn_menu">Ajouter Equipe</a></div>
             <div><a href="" class="btn_menuacceuil" ><img src="https://icon-library.com/images/home-logo-icon/home-logo-icon-0.jpg"></a></div>  
             <div><a href="" class="btn_menu ">Associer Player Equipe</a></div>   
