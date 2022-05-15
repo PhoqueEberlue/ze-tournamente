@@ -27,7 +27,7 @@
     </div>
 </div>
 
-<form action="form.php" method="post">
+<form action="form_add_team.php" method="post">
         <form-panel id ="panel">
             <form-header id="Formheader">
                 <h3>Ajout d'un membre dans une equipe :</h3>
@@ -36,14 +36,20 @@
             <form-content>
             
                 <form-group class="group" id="Choix">
-                    <select name="Equipe" id="equipe">
+                    <select name="equipe" id="equipe">
                     <option value="">Choisir une équipe</option>
+                    <?php
+                    get_equipe();
+                    ?>
                     </select>
                 </form-group>
 
                 <form-group class="group" id="Choix">
                     <select name="membre" id="membre">
                     <option value="">Choisir un membre </option>
+                    <?php
+                    get_membre();
+                    ?>
                     </select>
                 </form-group>
 
@@ -55,3 +61,62 @@
     </form>
 </body>
 </html>
+
+<?php
+
+
+function trait_form_team(){
+    
+    include_once("bdd.php"); 
+
+    $sql="INSERT INTO est_membre (id_participant,id_equipe)
+    VALUES ('".$_POST['membre']."',".$_POST['equipe'].")";
+    $bdd=new BDD("localhost","root","","z_tournament");
+    $bdd->insert($sql);
+
+}
+function get_equipe(){
+    include "bdd.php";   
+      $sql = "SELECT id_equipe,nom_equipe FROM `equipe`";
+      $bdd=new BDD("localhost","root","","z_tournament");
+      $res=$bdd->select($sql);
+      while ($row = mysqli_fetch_array($res)) {
+          var_dump($row);
+          echo "<option value='".$row[0]."'>".$row[1]."</option>\n";
+      }
+  }
+  
+  function get_membre(){
+   
+      $sql = "SELECT id_participant,nom_participant,prenom_participant FROM `participant`";
+      $bdd=new BDD("localhost","root","","z_tournament");
+      $res=$bdd->select($sql);
+      while ($row = mysqli_fetch_array($res)) {
+          var_dump($row);
+          echo "<option value='".$row['id_participant']."'>".$row['nom_participant']." ".$row['prenom_participant']."</option>\n";
+      }
+  }
+
+
+
+
+  
+
+if(isset($_POST["btn1"])){
+    $bool=True;
+    if(isset($_POST["equipe"]) && $_POST["equipe"]==""){
+        echo "Veuillez selectionner un nom <br>";
+        $bool=False;
+    }
+    if (isset($_POST['membre']) && $_POST['membre']=="") {
+        echo "Veuillez ecrire un prenom";
+        $bool=False;
+    }
+    
+    if($bool){
+        trait_form_team();
+    }
+    
+}
+
+?>
