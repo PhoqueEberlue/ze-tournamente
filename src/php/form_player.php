@@ -25,7 +25,7 @@
     
     </div>
 </div>
-<form action="form.php" method="post">
+<form action="form_player.php" method="post">
         <form-panel id ="panel">
             <form-header id="Formheader">
                 <h3>Ajout d'un membre :</h3>
@@ -55,3 +55,44 @@
     </form>
 </body>
 </html>
+
+
+<?php
+
+
+function trait_form_player(){
+    
+    include_once("bdd.php"); 
+
+    $sql="INSERT INTO participant (pseudo_participant,nom_participant,prenom_participant)
+    VALUES ('".$_POST['pseudo']."',".$_POST['nom'].",'".$_POST['prenom']."')";
+    $bdd=new BDD("localhost","root","","z_tournament");
+    $bdd->insert($sql);
+
+}
+
+
+
+
+if(isset($_POST["btn2"])){
+    $bool=True;
+    if(isset($_POST["nom"]) && $_POST["nom"]==""){
+        echo "Veuillez selectionner un nom <br>";
+        $bool=False;
+    }
+    if (isset($_POST['prenom']) && $_POST['prenom']=="") {
+        echo "Veuillez ecrire un prenom";
+        $bool=False;
+    }
+    if(isset($_POST['pseudo']) && $_POST['pseudo']=="") {
+        echo "Veuillez ecrire un prenom";
+        $bool=False;
+    }
+    if($bool){
+        trait_form_player();
+    }
+    
+    
+}
+
+?>
