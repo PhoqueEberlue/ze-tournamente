@@ -22,38 +22,77 @@
             <div id="box"><a href="tournament.php" class="btn_menu">Ze Tournamente</a></div> 
         </div>
 
-        <form action="form.php" method="post">
-            <form-panel id ="panel">
-                <form-header id="Formheader">
-                    <h2>Ajout d'un membre :</h2>
-                </form-header>
-                
-                <form-content>
-                    <form-group class="group">
-                        <label for="nom">Nom :</label>
-                        <input type="text" name="nom" id="nom" />
-                    </form-group>
-
-                    <form-group class="group">
-                        <label for="prenom" >Prenom :</label>
-                        <input type="text" name="prenom" id="prenom" />
-                    </form-group>
-
-                    <form-group class="group">
-                        <label for="pseudo">Pseudo :</label>
-                        <input type="text" name="pseudo" id="pseudo" />
-                    </form-group>
-
-                    <form-group class="group">
-                        <input type="submit" name="btn2" value="Ajouter" />
-                    </form-group>
-                </form-content>
-            </form-panel>
-        </form>
-    </div>
-
     
+    </div>
 </div>
+<form action="form_player.php" method="post">
+        <form-panel id ="panel">
+            <form-header id="Formheader">
+                <h3>Ajout d'un membre :</h3>
+            </form-header>
+            
+            <form-content>
+                <form-group class="group">
+                    <label for="nom">Nom :</label>
+                    <input type="text" name="nom" id="nom" />
+                </form-group>
 
+                <form-group class="group">
+                    <label for="prenom" >Prenom :</label>
+                    <input type="text" name="prenom" id="prenom" />
+                </form-group>
+
+                <form-group class="group">
+                    <label for="pseudo">Pseudo :</label>
+                    <input type="text" name="pseudo" id="pseudo" />
+                </form-group>
+
+                <form-group class="group">
+                    <input type="submit" name="btn2" value="Ajouter" />
+                </form-group>
+            </form-content>
+        </form-panel>
+    </form>
 </body>
 </html>
+
+
+<?php
+
+
+function trait_form_player(){
+    
+    include_once("bdd.php"); 
+
+    $sql="INSERT INTO participant (pseudo_participant,nom_participant,prenom_participant)
+    VALUES ('".$_POST['pseudo']."',".$_POST['nom'].",'".$_POST['prenom']."')";
+    $bdd=new BDD("localhost","root","","z_tournament");
+    $bdd->insert($sql);
+
+}
+
+
+
+
+if(isset($_POST["btn2"])){
+    $bool=True;
+    if(isset($_POST["nom"]) && $_POST["nom"]==""){
+        echo "Veuillez selectionner un nom <br>";
+        $bool=False;
+    }
+    if (isset($_POST['prenom']) && $_POST['prenom']=="") {
+        echo "Veuillez ecrire un prenom";
+        $bool=False;
+    }
+    if(isset($_POST['pseudo']) && $_POST['pseudo']=="") {
+        echo "Veuillez ecrire un prenom";
+        $bool=False;
+    }
+    if($bool){
+        trait_form_player();
+    }
+    
+    
+}
+
+?>
