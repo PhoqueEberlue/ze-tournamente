@@ -22,43 +22,43 @@
             <div id="box"><a href="tournament.php" class="btn_menu">Ze Tournamente</a></div> 
         </div>
 
-     
+        <form action="form_add_team.php" method="post">
+            <form-panel id ="panel">
+                <form-header id="Formheader">
+                    <h3>Ajout d'un membre dans une equipe :</h3>
+                </form-header>
+
+                <form-content>
+                
+                    <form-group class="group" id="Choix">
+                        <select name="equipe" id="equipe">
+                        <option value="">Choisir une équipe</option>
+                        <?php
+                        get_equipe();
+                        ?>
+                        </select>
+                    </form-group>
+
+                    <form-group class="group" id="Choix">
+                        <select name="membre" id="membre">
+                        <option value="">Choisir un membre </option>
+                        <?php
+                        get_membre();
+                        ?>
+                        </select>
+                    </form-group>
+
+                    <form-group class="group">
+                        <input type="submit" name="btn1" value="Ajouter" />
+                    </form-group>
+                </form-content>
+            </form-panel>
+        </form>
 
     </div>
 </div>
 
-<form action="form_add_team.php" method="post">
-        <form-panel id ="panel">
-            <form-header id="Formheader">
-                <h3>Ajout d'un membre dans une equipe :</h3>
-            </form-header>
 
-            <form-content>
-            
-                <form-group class="group" id="Choix">
-                    <select name="equipe" id="equipe">
-                    <option value="">Choisir une équipe</option>
-                    <?php
-                    get_equipe();
-                    ?>
-                    </select>
-                </form-group>
-
-                <form-group class="group" id="Choix">
-                    <select name="membre" id="membre">
-                    <option value="">Choisir un membre </option>
-                    <?php
-                    get_membre();
-                    ?>
-                    </select>
-                </form-group>
-
-                <form-group class="group">
-                    <input type="submit" name="btn1" value="Ajouter" />
-                </form-group>
-            </form-content>
-        </form-panel>
-    </form>
 </body>
 </html>
 
