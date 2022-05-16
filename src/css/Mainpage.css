@@ -56,6 +56,7 @@
     position: sticky;
     top: 0;
     z-index: 1;
+    border-radius: 20px;
 }
 
 .btn_menuacceuil {
@@ -132,6 +133,7 @@ h1 {
 }
 
 #explication {
+    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
