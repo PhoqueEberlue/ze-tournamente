@@ -27,12 +27,6 @@ class BDD
 
     }
 
-    public function insert($requete){
-        if ($this->conn->query($requete) === FALSE) {
-            echo "Error: " . $requete . "<br>" . $conn->error;
-          }
-    }
-
     private function insert_query($query)
     {
         if ($this->conn->query($query) === TRUE) {
