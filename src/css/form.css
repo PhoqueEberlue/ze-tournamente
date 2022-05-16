@@ -59,6 +59,23 @@ input {
     transition: 0.3s ease;
 }
 
+select{
+    outline: none;
+    display: block;
+    background: rgba(#000000, 0.1);
+    width: 100%;
+    border: 0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 12px 20px;
+    color: rgba(#000000, 0.6);
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 500;
+    line-height: inherit;
+    transition: 0.3s ease;
+}
+
 .group:focus {
     color: rgba(#000000, 0.8);
 }
@@ -100,5 +117,3 @@ h1 {
     font-weight: 700;
     text-transform: uppercase;
 }
-
-from-group#Choix {}

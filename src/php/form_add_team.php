@@ -22,36 +22,35 @@
             <div id="box"><a href="tournament.php" class="btn_menu">Ze Tournamente</a></div> 
         </div>
 
-     
+        <form action="form.php" method="post">
+            <form-panel id ="panel">
+                <form-header id="Formheader">
+                    <h2>Ajout d'un membre dans une equipe :</h2>
+                </form-header>
+
+                <form-content>
+                
+                    <form-group class="group" id="Choix">
+                        <select name="Equipe" id="equipe">
+                        <option value="">Choisir une équipe</option>
+                        </select>
+                    </form-group>
+
+                    <form-group class="group" id="Choix">
+                        <select name="membre" id="membre">
+                        <option value="">Choisir un membre </option>
+                        </select>
+                    </form-group>
+
+                    <form-group class="group">
+                        <input type="submit" name="btn1" value="Ajouter" />
+                    </form-group>
+                </form-content>
+            </form-panel>
+        </form>
 
     </div>
 </div>
 
-<form action="form.php" method="post">
-        <form-panel id ="panel">
-            <form-header id="Formheader">
-                <h3>Ajout d'un membre dans une equipe :</h3>
-            </form-header>
-
-            <form-content>
-            
-                <form-group class="group" id="Choix">
-                    <select name="Equipe" id="equipe">
-                    <option value="">Choisir une équipe</option>
-                    </select>
-                </form-group>
-
-                <form-group class="group" id="Choix">
-                    <select name="membre" id="membre">
-                    <option value="">Choisir un membre </option>
-                    </select>
-                </form-group>
-
-                <form-group class="group">
-                    <input type="submit" name="btn1" value="Ajouter" />
-                </form-group>
-            </form-content>
-        </form-panel>
-    </form>
 </body>
 </html>

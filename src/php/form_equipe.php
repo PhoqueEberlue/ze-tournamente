@@ -22,56 +22,55 @@
             <div id="box"><a href="tournament.php" class="btn_menu">Ze Tournamente</a></div> 
         </div>
         
+        <form action="form.php" method="post">
+            <form-panel id ="panel">
+                <form-header id="Formheader">
+                    <h2>Ajout d'une equipe :</h2>
+                </form-header>
+
+                <form-content>
+                    <form-group class="group">
+                        <label for="nomTeam">Nom de l'équipe:</label>
+                        <input type="text" name="NomTeam" id="NomTeam" />
+                    </form-group>
+                
+                    <form-group class="group" id="Choix">
+                        <select name="activite" id="activite">
+                        <option value="">Choisir une activité</option>
+                        </select>
+                    </form-group>
+
+                    <form-group class="group">
+                        <input type="submit" name="btn1" value="Ajouter" />
+                    </form-group>
+                </form-content>
+            </form-panel>
+        </form>
+    
+        <form action="form.php" method="post">
+            <form-panel id ="panel">
+                <form-header id="Formheader">
+                    <h2>Ajout d'une activité :</h2>
+                </form-header>
+            
+                <form-content>
+                    <form-group class="group">
+                        <label for="nomActivite">Nom :</label>
+                        <input type="text" name="nomActivite" id="nomActivite" />
+                    </form-group>
+
+                    <form-group class="group">
+                        <input type="submit" name="btn3" value="Ajouter" />
+                    </form-group>
+                </form-content>
+            </form-panel>
+        </form>
 
     </div>
 </div>
 
 
 
-<form action="form.php" method="post">
-        <form-panel id ="panel">
-            <form-header id="Formheader">
-                <h3>Ajout d'une equipe :</h3>
-            </form-header>
 
-            <form-content>
-                <form-group class="group">
-                    <label for="nomTeam">Nom de l'équipe:</label>
-                    <input type="text" name="NomTeam" id="NomTeam" />
-                </form-group>
-            
-                <form-group class="group" id="Choix">
-                    <select name="activite" id="activite">
-                    <option value="">Choisir une activité</option>
-                    </select>
-                </form-group>
-
-                <form-group class="group">
-                    <input type="submit" name="btn1" value="Ajouter" />
-                </form-group>
-            </form-content>
-        </form-panel>
-    </form>
-
-
-    
-    <form action="form.php" method="post">
-        <form-panel id ="panel">
-            <form-header id="Formheader">
-                <h3>Ajout d'une activité :</h3>
-            </form-header>
-        
-            <form-content>
-                <form-group class="group">
-                    <label for="nomActivite">Nom :</label>
-                    <input type="text" name="nomActivite" id="nomActivite" />
-                </form-group>
-
-                <form-group class="group">
-                    <input type="submit" name="btn3" value="Ajouter" />
-                </form-group>
-            </form-content>
-        </form-panel>
-    </form>
 </body>
 </html>

@@ -22,36 +22,38 @@
             <div id="box"><a href="tournament.php" class="btn_menu">Ze Tournamente</a></div> 
         </div>
 
-    
+        <form action="form.php" method="post">
+            <form-panel id ="panel">
+                <form-header id="Formheader">
+                    <h2>Ajout d'un membre :</h2>
+                </form-header>
+                
+                <form-content>
+                    <form-group class="group">
+                        <label for="nom">Nom :</label>
+                        <input type="text" name="nom" id="nom" />
+                    </form-group>
+
+                    <form-group class="group">
+                        <label for="prenom" >Prenom :</label>
+                        <input type="text" name="prenom" id="prenom" />
+                    </form-group>
+
+                    <form-group class="group">
+                        <label for="pseudo">Pseudo :</label>
+                        <input type="text" name="pseudo" id="pseudo" />
+                    </form-group>
+
+                    <form-group class="group">
+                        <input type="submit" name="btn2" value="Ajouter" />
+                    </form-group>
+                </form-content>
+            </form-panel>
+        </form>
     </div>
+
+    
 </div>
-<form action="form.php" method="post">
-        <form-panel id ="panel">
-            <form-header id="Formheader">
-                <h3>Ajout d'un membre :</h3>
-            </form-header>
-            
-            <form-content>
-                <form-group class="group">
-                    <label for="nom">Nom :</label>
-                    <input type="text" name="nom" id="nom" />
-                </form-group>
 
-                <form-group class="group">
-                    <label for="prenom" >Prenom :</label>
-                    <input type="text" name="prenom" id="prenom" />
-                </form-group>
-
-                <form-group class="group">
-                    <label for="pseudo">Pseudo :</label>
-                    <input type="text" name="pseudo" id="pseudo" />
-                </form-group>
-
-                <form-group class="group">
-                    <input type="submit" name="btn2" value="Ajouter" />
-                </form-group>
-            </form-content>
-        </form-panel>
-    </form>
 </body>
 </html>
