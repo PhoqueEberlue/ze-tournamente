@@ -60,20 +60,8 @@
 
 
 <?php
-
-function trait_form_player(){
-    
-    include_once("bdd.php"); 
-
-    $sql="INSERT INTO participant (pseudo_participant,nom_participant,prenom_participant)
-    VALUES ('".$_POST['pseudo']."',".$_POST['nom'].",'".$_POST['prenom']."')";
-    $bdd=new BDD("localhost","root","","z_tournament");
-    $bdd->insert($sql);
-
-}
-
-
-
+include_once("bdd.php");
+$bdd = new BDD("localhost", "root", "password", "TOURNOIS");
 
 if(isset($_POST["btn2"])){
     $bool=True;
@@ -90,10 +78,7 @@ if(isset($_POST["btn2"])){
         $bool=False;
     }
     if($bool){
-        trait_form_player();
+        $bdd->add_player($_POST['pseudo'], $_POST['nom'], $_POST['prenom']);
     }
-    
-    
 }
-
 ?>
