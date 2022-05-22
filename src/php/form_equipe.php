@@ -1,3 +1,7 @@
+<?php
+include_once ("bdd.php");
+$bdd = new BDD("localhost", "root", "password", "TOURNOIS");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +42,10 @@
                         <select name="activite" id="activite">
                         <option value="">Choisir une activité</option>
                         <?php
-                            get_activite();
+                        $activites = $bdd->get_activite();
+                        foreach ($activites as $activite) {
+                            echo "<option value='" . $activite[0] . "'>" . $activite[1] . "</option>\n";
+                        }
                         ?>
                         </select>
                     </form-group>
@@ -71,48 +78,10 @@
 
     </div>
 </div>
-
-
-
-
 </body>
 </html>
 
-
 <?php
-
-function get_activite(){
-  include "bdd.php";   
-    $sql = "SELECT id_activite,nom_activite FROM `activite`";
-    $bdd=new BDD("localhost","root","","z_tournament");
-    $res=$bdd->select($sql);
-    while ($row = mysqli_fetch_array($res)) {
-        var_dump($row);
-        echo "<option value='".$row[0]."'>".$row[1]."</option>\n";
-    }
-}
-
-
-
-
-function trait_form_equipe(){
-    //include "bdd.php";  
-    $sql="INSERT INTO equipe (nom_equipe,id_activite)
-    VALUES ('".$_POST['NomTeam']."',".$_POST['activite'].")";
-    $bdd=new BDD("localhost","root","","z_tournament");
-    $bdd->insert($sql);
-
-}
-
-
-function trait_form_activite(){
-    $sql="INSERT INTO activite (nom_activite)
-    VALUES ('".$_POST['nomActivite']."')";
-    $bdd=new BDD("localhost","root","","z_tournament");
-    $bdd->insert($sql);
-}
-
-
 if(isset($_POST["btn1"])){
     $bool=True;
     if(isset($_POST["activite"]) && $_POST["activite"]==""){
@@ -123,7 +92,7 @@ if(isset($_POST["btn1"])){
         $bool=False;
     }
     if($bool){
-        trait_form_equipe();
+        $bdd->add_equipe($_POST['NomTeam'], $_POST['activite']);
     }
     
 }
@@ -135,7 +104,7 @@ if(isset($_POST["btn3"])){
         $bool=False;
     }
     if($bool){
-        trait_form_activite();
+        $bdd->add_activite($_POST['nomActivite']);
     }
 }
 ?>
