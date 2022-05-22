@@ -1,13 +1,6 @@
 <?php
-
-
 class BDD
 {
-
-    private $host;
-    private $username;
-    private $pswd;
-    private $db;
     private $conn;
 
 
@@ -19,7 +12,8 @@ class BDD
         }
     }
 
-    public function select($requete)
+    // INTERNAL FUNCTIONS OF THE CLASS
+    private function select($requete)
     {
         $result = $this->conn->query($requete);
 
@@ -27,7 +21,7 @@ class BDD
 
     }
 
-    private function insert_query($query)
+    private function insert($query)
     {
         if ($this->conn->query($query) === TRUE) {
             //echo "New record created successfully";
@@ -36,6 +30,7 @@ class BDD
         }
     }
 
+    // ------------------------ INSERT FUNCTIONS ------------------------
     public function add_tournoi($nom_tournoi)
         /*
          * Ajout d'un tournoi
@@ -47,7 +42,7 @@ class BDD
     {
         $query = "INSERT INTO TOURNOI(nom_tournoi, regle_tournoi)
                 VALUES('" . $nom_tournoi . "', NULL)";
-        $this->insert_query($query);
+        $this->insert($query);
         return $this->conn->insert_id;
     }
 
@@ -98,7 +93,7 @@ class BDD
     {
         $query = "INSERT INTO `MATCH`(parent_match, type_match, id_tournoi)
                   VALUES(" . $parent_match . ", '" . $type_match . "', " . $id_tournoi . ")";
-        $this->insert_query($query);
+        $this->insert($query);
         return $this->conn->insert_id;
     }
 
@@ -117,13 +112,13 @@ class BDD
     {
         $query = "INSERT INTO `MATCH`(equipe1_match, equipe2_match, parent_match, type_match, id_tournoi)
                   VALUES('" . $equipe1 . "', '" . $equipe2 . "', " . $parent_match . ", '" . $type_match . "', " . $id_tournoi . ")";
-        $this->insert_query($query);
+        $this->insert($query);
         return $this->conn->insert_id;
     }
 
     public function add_equipe($nom_equipe, $id_activite = 'NULL')
         /*
-         * Ajoute une equipe
+         * Ajoute une équipe
          * paramètres :
          *  - nom_equipe : le nom de l'équipe
          *  - id_activité : l'id de l'activité pratiquée par l'équipe
@@ -133,8 +128,93 @@ class BDD
     {
         $query = "INSERT INTO `EQUIPE`(nom_equipe, id_activite)
                   VALUES('" . $nom_equipe . "', " . $id_activite . ")";
-        $this->insert_query($query);
+        $this->insert($query);
         return $this->conn->insert_id;
+    }
+
+    public function add_player_to_team($id_participant, $id_equipe)
+        /*
+         * Ajoute un joueur à une équipe
+         * paramètres :
+         *  - id_participant : l'id du joueur
+         *  - id_equipe : l'id de l'équipe
+         */
+    {
+        $query = "INSERT INTO EST_MEMBRE (id_participant, id_equipe)
+                  VALUES ('" . $id_participant . "'," . $id_equipe . ")";
+        $this->insert($query);
+    }
+
+    public function add_player($pseudo_participant, $nom_participant, $prenom_participant)
+        /*
+         * Ajoute un joueur à la base de données
+         * paramètres :
+         *  - pseudo_participant : le pseudo du participant
+         *  - nom_participant : le nom du participant
+         *  - prenom_participant : le prénom du participant
+         * retour :
+         *  - l'id du participant ajouté à la base de données
+         */
+    {
+        $query = "INSERT INTO PARTICIPANT (pseudo_participant, nom_participant, prenom_participant)
+                  VALUES ('" . $pseudo_participant . "', '" . $nom_participant . "', '" . $prenom_participant . "')";
+        $this->insert($query);
+        return $this->conn->insert_id;
+    }
+
+    function add_activite($nom_activite)
+        /*
+         * Ajoute une activité à la base données
+         * paramètres :
+         *  - nom_activite : le nom de l'activité
+         * retour :
+         *  - l'id de l'activité ajoutée à la base de données
+         */
+    {
+        $query = "INSERT INTO ACTIVITE (nom_activite)
+                VALUES ('" . $nom_activite . "')";
+        $this->insert($query);
+        return $this->conn->insert_id;
+    }
+
+    // ------------------------ SELECT FUNCTIONS ------------------------
+    function get_activite()
+        /*
+         * Récupère la liste des activités
+         * retour :
+         *  - Un tableau de tableau contenant chacun respectivement l'id de l'activité et son nom
+         */
+    {
+        $query = "SELECT id_activite, nom_activite FROM `ACTIVITE`";
+        $res = $this->select($query);
+        return $res->fetch_all();
+
+    }
+
+    public function get_equipes()
+        /*
+         * Récupère la liste des équipes inscrites dans la base de données
+         * retour :
+         *  - Un tableau de tableau contenant chacun respectivement l'id de l'équipe et son nom
+         */
+    {
+        $query = "SELECT id_equipe, nom_equipe FROM `EQUIPE`";
+        $res = $this->select($query);
+        return $res->fetch_all();
+
+    }
+
+    public function get_membres()
+        /*
+         * Récupère la liste des participants
+         * retour :
+         *  - Un tableau de tableau contenant chacun respectivement l'id du participant son nom et son prénom
+         */
+    {
+        $query = "SELECT id_participant, nom_participant, prenom_participant FROM `PARTICIPANT`";
+        $res = $this->select($query);
+        return $res->fetch_all();
+
     }
 }
 ?>
