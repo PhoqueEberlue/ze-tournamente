@@ -62,7 +62,7 @@ $bdd = new BDD("localhost", "root","", "z_tournament");
                         <select name="activite" id="activite">
                         <option value="">Choisir une activité</option>
                         <?php
-                        $activites = $bdd->get_activite();
+                        $activites = $bdd->get_activites();
                         foreach ($activites as $activite) {
                             echo "<option value='" . $activite[0] . "'>" . $activite[1] . "</option>\n";
                         }
