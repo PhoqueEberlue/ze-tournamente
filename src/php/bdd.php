@@ -46,6 +46,20 @@ class BDD
         return $this->conn->insert_id;
     }
 
+    public function add_tournoi_complet($nom_tournoi,$regle){
+        $query = "INSERT INTO TOURNOI(nom_tournoi, regle_tournoi)
+        VALUES('" . $nom_tournoi . "', '".$regle."')";
+        $this->insert($query);
+        return $this->conn->insert_id;
+    }
+
+    function add_team_tournoi($id_team,$id_tournoi){
+        $query = "INSERT INTO participer(id_equipe, id_tournoi)
+        VALUES('" . $id_team . "', '".$id_tournoi."')";
+        $this->insert($query);
+        return $this->conn->insert_id;
+    }
+
     public function create_tree($liste_equipe, $nb_equipe, $id_tournoi, $type_match = "tree", $depth = 0, $id_parent_match = 'NULL')
         /*
          * Fonction de création de l'arbre
@@ -215,6 +229,13 @@ class BDD
         $res = $this->select($query);
         return $res->fetch_all();
 
+    }
+
+
+    public function get_tournoi(){
+        $query = "SELECT id_tournoi, nom_tournoi, regle_tournoi FROM `tournoi`";
+        $res = $this->select($query);
+        return $res->fetch_all();
     }
 }
 ?>
