@@ -1,6 +1,6 @@
 <?php
 include_once ("bdd.php");
-$bdd = new BDD("localhost", "root", "password", "TOURNOIS");
+$bdd = new BDD("localhost", "root","", "z_tournament");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,6 +25,26 @@ $bdd = new BDD("localhost", "root", "password", "TOURNOIS");
             <div id="box"><a href="form_add_team.php" class="btn_menu ">Création Tournois</a></div>   
             <div id="box"><a href="tournament.php" class="btn_menu">Ze Tournamente</a></div> 
         </div>
+
+            
+        <form action="form_equipe.php" method="post">
+            <form-panel id ="panel">
+                <form-header id="Formheader">
+                    <h3>Ajout d'une activité :</h3>
+                </form-header>
+            
+                <form-content>
+                    <form-group class="group">
+                        <label for="nomActivite">Nom :</label>
+                        <input type="text" name="nomActivite" id="nomActivite" />
+                    </form-group>
+
+                    <form-group class="group">
+                        <input type="submit" name="btn3" value="Ajouter" />
+                    </form-group>
+                </form-content>
+            </form-panel>
+        </form>
         
         <form action="form_equipe.php" method="post">
             <form-panel id ="panel">
@@ -56,25 +76,47 @@ $bdd = new BDD("localhost", "root", "password", "TOURNOIS");
                 </form-content>
             </form-panel>
         </form>
-    
-        <form action="form_equipe.php" method="post">
-            <form-panel id ="panel">
-                <form-header id="Formheader">
-                    <h3>Ajout d'une activité :</h3>
-                </form-header>
-            
-                <form-content>
-                    <form-group class="group">
-                        <label for="nomActivite">Nom :</label>
-                        <input type="text" name="nomActivite" id="nomActivite" />
-                    </form-group>
 
-                    <form-group class="group">
-                        <input type="submit" name="btn3" value="Ajouter" />
-                    </form-group>
-                </form-content>
-            </form-panel>
-        </form>
+
+        
+        <form action="form_add_team.php" method="post">
+                <form-panel id="panel">
+                    <form-header id="Formheader">
+                        <h3>Ajout d'un membre dans une equipe :</h3>
+                    </form-header>
+
+                    <form-content>
+
+                        <form-group class="group" id="Choix">
+                            <select name="equipe" id="equipe">
+                                <option value="">Choisir une équipe</option>
+                                <?php
+                                $equipes = $bdd->get_equipes();
+                                foreach ($equipes as $equipe) {
+                                    echo "<option value='" . $equipe[0] . "'>" . $equipe[1] . "</option>\n";
+                                }
+                                ?>
+                            </select>
+                        </form-group>
+
+                        <form-group class="group" id="Choix">
+                            <select name="membre" id="membre">
+                                <option value="">Choisir un membre</option>
+                                <?php
+                                $membres = $bdd->get_membres();
+                                foreach ($membres as $membre) {
+                                    echo "<option value='" . $membre[0] . "'>" . $membre[1] . " " . $membre[2] . "</option>\n";
+                                }
+                                ?>
+                            </select>
+                        </form-group>
+
+                        <form-group class="group">
+                            <input type="submit" name="btn1" value="Ajouter"/>
+                        </form-group>
+                    </form-content>
+                </form-panel>
+            </form>
 
     </div>
 </div>
@@ -105,6 +147,22 @@ if(isset($_POST["btn3"])){
     }
     if($bool){
         $bdd->add_activite($_POST['nomActivite']);
+    }
+}
+
+if (isset($_POST["btn1"])) {
+    $bool = True;
+    if (isset($_POST["equipe"]) && $_POST["equipe"] == "") {
+        echo "Veuillez selectionner un nom <br>";
+        $bool = False;
+    }
+    if (isset($_POST['membre']) && $_POST['membre'] == "") {
+        echo "Veuillez ecrire un prenom";
+        $bool = False;
+    }
+
+    if ($bool) {
+        $bdd->add_player_to_team($_POST['membre'], $_POST['equipe']);
     }
 }
 ?>
