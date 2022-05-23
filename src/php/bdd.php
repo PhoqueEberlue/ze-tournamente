@@ -1,7 +1,9 @@
 <?php
+
 class BDD
 {
     private $conn;
+    private $liste_equipe;
 
 
     public function __construct($host, $username, $pswd, $db)
@@ -10,6 +12,11 @@ class BDD
         if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
         }
+    }
+
+    public function set_liste_equipe($liste_equipe)
+    {
+        $this->liste_equipe = $liste_equipe;
     }
 
     // INTERNAL FUNCTIONS OF THE CLASS
@@ -60,11 +67,11 @@ class BDD
         return $this->conn->insert_id;
     }
 
-    public function create_tree($liste_equipe, $nb_equipe, $id_tournoi, $type_match = "tree", $depth = 0, $id_parent_match = 'NULL')
+    public function create_tree($nb_equipe, $id_tournoi, $type_match = "tree", $depth = 1, $id_parent_match = 'NULL')
         /*
          * Fonction de création de l'arbre
+         * il faut d'abord appeler la fonction set_liste_equipe() avant cette fonction
          * paramètres :
-         *  - liste_equipe : la liste des ID d'equipe participant au tournoi
          *  - nb_equipe : le nombre total d'equipe
          *  - id_tournoi : l'id du tournoi qui accueille les matchs
          *  - type_match : le type de match
@@ -72,29 +79,27 @@ class BDD
          *  - id_parent_match : l'id du match parent
          */
     {
-        // Si le niveau n+1 est de taille superieure au nombre d'equipe
-        if (pow(2, $depth + 1) >= $nb_equipe) {
-            echo print_r($liste_equipe);
-            if (count($liste_equipe) > 1) {
+        // Si le niveau actuel est de taille superieure au nombre d'equipe
+        if (pow(2, $depth) >= $nb_equipe) {
+            if (count($this->liste_equipe) > 1) {
                 // Ajout d'un match avec deux equipes
-                $this->add_match(array_pop($liste_equipe), array_pop($liste_equipe), $id_parent_match, $type_match, $id_tournoi);
+                $this->add_match(array_pop($this->liste_equipe), array_pop($this->liste_equipe), $id_parent_match, $depth, $type_match, $id_tournoi);
             }
-            if (count($liste_equipe) == 1) {
-                $this->add_match(array_pop($liste_equipe), NULL, $id_parent_match, $type_match, $id_tournoi);
+            if (count($this->liste_equipe) == 1) {
+                $this->add_match(array_pop($this->liste_equipe), NULL, $id_parent_match, $depth, $type_match, $id_tournoi);
             }
-            return $liste_equipe;
         } else {
-            $depth++;
             // Ajout des match intermediaires
-            $parent_id = $this->add_empty_match($id_parent_match, $type_match, $id_tournoi);
+            $parent_id = $this->add_empty_match($id_parent_match, $depth, $type_match, $id_tournoi);
 
             // Appel recursif de la fontion de creation de l'arbre
-            $liste_equipe = $this->create_tree($liste_equipe, $nb_equipe, $id_tournoi, $type_match, $depth, $parent_id);
-            $this->create_tree($liste_equipe, $nb_equipe, $id_tournoi, $type_match, $depth, $parent_id);
+            $depth++;
+            $this->create_tree($nb_equipe, $id_tournoi, $type_match, $depth, $parent_id);
+            $this->create_tree($nb_equipe, $id_tournoi, $type_match, $depth, $parent_id);
         }
     }
 
-    public function add_empty_match($parent_match, $type_match, $id_tournoi)
+    public function add_empty_match($id_parent_match, $round_match, $type_match, $id_tournoi)
         /*
          * Ajoute un match vide à un tournoi
          * paramètres :
@@ -105,13 +110,13 @@ class BDD
          *  - l'id du match inséré dans la base de données
          */
     {
-        $query = "INSERT INTO `MATCH`(parent_match, type_match, id_tournoi)
-                  VALUES(" . $parent_match . ", '" . $type_match . "', " . $id_tournoi . ")";
+        $query = "INSERT INTO `MATCH`(id_parent_match, round_match, type_match, id_tournoi)
+                  VALUES(" . $id_parent_match . ", " . $round_match . ", '" . $type_match . "', " . $id_tournoi . ")";
         $this->insert($query);
         return $this->conn->insert_id;
     }
 
-    public function add_match($equipe1, $equipe2, $parent_match, $type_match, $id_tournoi)
+    public function add_match($equipe1, $equipe2, $id_parent_match, $round_match, $type_match, $id_tournoi)
         /*
          * Ajoute un match à un tournoi
          * paramètres :
@@ -121,11 +126,11 @@ class BDD
          *  - type_match : le type de match (pool / tree)
          *  - id_tournoi : l'id du tournoi
          * retour:
-         *  - l'id du match insérée dans la base de données
+         *  - l'id du match inséré dans la base de données
          */
     {
-        $query = "INSERT INTO `MATCH`(equipe1_match, equipe2_match, parent_match, type_match, id_tournoi)
-                  VALUES('" . $equipe1 . "', '" . $equipe2 . "', " . $parent_match . ", '" . $type_match . "', " . $id_tournoi . ")";
+        $query = "INSERT INTO `MATCH`(equipe1_match, equipe2_match, id_parent_match, round_match, type_match, id_tournoi)
+                  VALUES('" . $equipe1 . "', '" . $equipe2 . "', " . $id_parent_match . ", " . $round_match . ", '" . $type_match . "', " . $id_tournoi . ")";
         $this->insert($query);
         return $this->conn->insert_id;
     }
@@ -192,7 +197,7 @@ class BDD
     }
 
     // ------------------------ SELECT FUNCTIONS ------------------------
-    function get_activite()
+    function get_activites()
         /*
          * Récupère la liste des activités
          * retour :
@@ -231,11 +236,44 @@ class BDD
 
     }
 
-
-    public function get_tournoi(){
+    public function get_tournois(){
         $query = "SELECT id_tournoi, nom_tournoi, regle_tournoi FROM `tournoi`";
         $res = $this->select($query);
         return $res->fetch_all();
+    }
+
+    public function get_matchs($round_match, $id_tournoi)
+    {
+        $query = "SELECT id_match, equipe1_match, equipe2_match, score_equipe1_match, score_equipe2_match, round_match, 
+                  id_parent_match, type_match 
+                  FROM `MATCH`
+                  WHERE round_match = ". $round_match . " and id_tournoi = ". $id_tournoi;
+        $res = $this->select($query);
+        return $res->fetch_all();
+    }
+
+    public function get_equipe($id_equipe) {
+        $query = "SELECT id_equipe, nom_equipe 
+                  FROM `EQUIPE`
+                  WHERE id_equipe = ". $id_equipe;
+        $res = $this->select($query);
+        return $res->fetch_array();
+    }
+
+    public function get_tournoi($id_tournoi) {
+        $query = "SELECT id_tournoi, nom_tournoi, regle_tournoi 
+                  FROM `TOURNOI`
+                  WHERE id_tournoi = ". $id_tournoi;
+        $res = $this->select($query);
+        return $res->fetch_array();
+    }
+
+    public function get_activite($id_activite) {
+        $query = "SELECT id_activite, nom_activite  
+                  FROM `ACTIVITE`
+                  WHERE id_activite = ". $id_activite;
+        $res = $this->select($query);
+        return $res->fetch_array();
     }
 }
 ?>
