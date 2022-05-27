@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Mainpage.css"/>
+    <link rel="stylesheet" href="../css/Mainpage.css"/>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
     <title>Ze Tournamente</title>
@@ -17,11 +17,11 @@
 <div id="contentlmao">
     <div id="main">
         <div id="menu">
-            <div id="box"><a href="Créationjoueur.php" class="btn_menu">Création joueur</a></div>
-            <div id="box"><a href="creationequipe.php" class="btn_menu">Création Equipe</a></div>
+            <div id="box"><a href="form_player.php" class="btn_menu">Création joueur</a></div>
+            <div id="box"><a href="form_equipe.php" class="btn_menu">Création Equipe</a></div>
             <div id="box"><a href="Mainpage.php" class="btn_menuacceuil" ><img src="https://icon-library.com/images/home-logo-icon/home-logo-icon-0.jpg"></a></div>  
-            <div id="box"><a href="ajoutermembreequipe.php" class="btn_menu ">Création Tournois</a></div>   
-            <div id="box"><a href="tournois.php" class="btn_menu">Ze Tournamente</a></div> 
+            <div id="box"><a href="form_add_team.php" class="btn_menu ">Création Tournois</a></div>   
+            <div id="box"><a href="tournament.php" class="btn_menu">Ze Tournamente</a></div> 
         </div>
         <div id="explication">
             <h1>Bienvenue sur notre Big Site de Tounamente</br></h1>

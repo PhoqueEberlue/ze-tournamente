@@ -1,3 +1,4 @@
+.body{background-color: #000000;}
 #Title{
     display: flex;
     background: linear-gradient(rgb(48, 48, 48),rgb(199, 0, 0));
@@ -7,6 +8,7 @@
     background-image: url(https://us.123rf.com/450wm/sukanda26/sukanda261604/sukanda26160400053/56113191-red-black-abstract-background.jpg?ver=6);
     background-size: cover;
     background-repeat: no-repeat;
+    
 }
 
 #bigtitle {
@@ -20,6 +22,7 @@
     font-style: normal;
     font-variant: small-caps;
     text-transform: none;
+    
     }
 
 #main{
@@ -49,9 +52,14 @@
     padding-left: 50px;
     padding-top: 10px;
     padding-bottom: 10px;
+    position: sticky;
+    top: 0;
+    z-index:1;
+    }
+
 
     
-  }
+  
 
 
 .btn_menuacceuil{
@@ -91,12 +99,18 @@
 	font-style:normal;
 	height:35px;
 	line-height:30px;
-	width:152px;
+	width:wrap;
+    padding: 2.5px;
 	text-decoration:none;
 	text-align:center;
     border-radius: 5px;
 }
 
+.mySlides {display:none;}
+
+h3,label,h1{
+    color: #FFFFFF;
+}
 
 .btn_menu:hover{
     color: rgb(87, 0, 0);
@@ -111,4 +125,52 @@
     background-color: rgb(185, 0, 0);
     border-color: black;
     
+}
+
+@font-face{
+    font-family: cocogoose_classic;
+    src: url(fonts/Cocogoose-Classic-Medium-trial.ttf);
+}
+
+#explication{
+    display: flex;
+    
+    flex-direction: column;
+    justify-content: center;
+}
+
+.btntournoi {
+    display:flex;
+    justify-content: center;
+    text-decoration: none;
+    padding: 12px;
+    font-family: arial;
+    font-size: 1em;
+    color: #000000;
+    background-color: #d8d8d8;
+    border-radius: 30px;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border: 6px solid #ff0000;
+    box-shadow: 3px 3px 13px #ffffff;
+    -webkit-box-shadow: 3px 3px 13px #ffffff;
+    -moz-box-shadow: 3px 3px 13px #ffffff;
+    }
+        
+        
+    .btntournoi:hover {
+    padding: 10px;
+    color: #FFFFFF;
+    background-color: #ff0000;
+    border-radius: 24px;
+    -webkit-border-radius: 24px;
+    -moz-border-radius: 24px;
+    border: 4px solid #FFFFFF;
+    box-shadow: 1px 1px 4px #ffffff;
+    -webkit-box-shadow: 1px 1px 4px #ffffff;
+    -moz-box-shadow: 1px 1px 4px #ffffff;
+    }
+
+#listtournois{
+    margin: 50px;
 }
