@@ -1,0 +1,13 @@
+pratiquer, 0N Activite, 11 Equipe
+Activite: id_activite, nom_activite
+::
+
+Equipe: id_equipe, nom_equipe
+Participer, 0N Equipe, 2N Tournoi
+Tournoi: id_tournoi, nom_tournoi, regle_tournoi
+A Parent, 01 Match, 0N> Match
+
+est_membre, 0N Participant, 0N Equipe
+Participant: id_participant, pseudo_participant, nom_participant, prenom_participant
+Jouer, 11 Match, 1N Tournoi
+Match: id_match, equipe1_match, equipe2_match, score_equipe1_match, score_equipe2_match, round_match, id_parent_match, type_match

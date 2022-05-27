@@ -1,0 +1,69 @@
+<html>
+<head>
+<meta charset='utf-8'>
+<style>
+  #mld .relation { font-variant: small-caps; font-weight: bold }
+  #mld .primary { text-decoration: underline }
+  #mld .foreign { font-style: oblique }
+  #mld .normal { }
+</style>
+</head>
+<body>
+<div id='mld'>
+<div>
+  <span class='relation'>Activite</span> (
+    <span class='primary'>id_activite</span>,
+    <span class='normal'>nom_activite</span>
+  )
+</div>
+<div>
+  <span class='relation'>Equipe</span> (
+    <span class='primary'>id_equipe</span>,
+    <span class='normal'>nom_equipe</span>,
+    <span class='foreign'>id_activite</span>
+  )
+</div>
+<div>
+  <span class='relation'>Participer</span> (
+    <span class='foreign primary'>id_equipe</span>,
+    <span class='foreign primary'>id_tournoi</span>
+  )
+</div>
+<div>
+  <span class='relation'>Tournoi</span> (
+    <span class='primary'>id_tournoi</span>,
+    <span class='normal'>nom_tournoi</span>,
+    <span class='normal'>regle_tournoi</span>
+  )
+</div>
+<div>
+  <span class='relation'>est_membre</span> (
+    <span class='foreign primary'>id_participant</span>,
+    <span class='foreign primary'>id_equipe</span>
+  )
+</div>
+<div>
+  <span class='relation'>Participant</span> (
+    <span class='primary'>id_participant</span>,
+    <span class='normal'>pseudo_participant</span>,
+    <span class='normal'>nom_participant</span>,
+    <span class='normal'>prenom_participant</span>
+  )
+</div>
+<div>
+  <span class='relation'>Match</span> (
+    <span class='primary'>id_match</span>,
+    <span class='normal'>equipe1_match</span>,
+    <span class='normal'>equipe2_match</span>,
+    <span class='normal'>score_equipe1_match</span>,
+    <span class='normal'>score_equipe2_match</span>,
+    <span class='normal'>round_match</span>,
+    <span class='normal'>id_parent_match</span>,
+    <span class='normal'>type_match</span>,
+    <span class='foreign'>id_tournoi</span>,
+    <span class='foreign'>id_match.1</span>
+  )
+</div>
+</div>
+</body>
+</html>
