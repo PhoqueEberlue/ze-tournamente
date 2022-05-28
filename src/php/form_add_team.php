@@ -80,8 +80,10 @@ $bdd = new BDD("localhost", "root", "", "TOURNOIS");
                                 <option value="">Choisir un tournoi </option>
                                 <?php
                                 $bdd=new BDD("localhost","root","","z_tournament");
-                                $t = $bdd->get_tournoi();
+                                $t = $bdd->get_tournois();
+                                
                                 foreach ($t as $tournoi) {
+                                    
                                     echo "<option value='" . $tournoi[0] . "'>" . $tournoi[1] . "</option>\n";
                                 }
                                 
@@ -96,6 +98,39 @@ $bdd = new BDD("localhost", "root", "", "TOURNOIS");
                 </form-panel>
 
             </form>
+
+            
+            <form action="form_add_team.php" method="post">
+                <form-panel id ="panel">
+                    <form-header id="Formheader">
+                        <h3>Generer le tournois  :</h3>
+                    </form-header>
+
+                    <form-content>
+                    <form-group class="group">
+                        <select name="tournoi" id="tournoi">
+                                <option value="">Choisir un tournoi </option>
+                                <?php
+                                $bdd=new BDD("localhost","root","","z_tournament");
+                                $t = $bdd->get_tournois();
+                                
+                                foreach ($t as $tournoi) {
+                                    
+                                    echo "<option value='" . $tournoi[0] . "'>" . $tournoi[1] . "</option>\n";
+                                }
+                                
+                                ?>
+                            </select>
+                        </form-group>
+
+                        <form-group class="group">
+                            <input type="submit" name="btn7" value="Ajouter" />
+                        </form-group>
+                    </form-content>
+                </form-panel>
+
+            </form>
+
 
  
 
@@ -144,6 +179,36 @@ if (isset($_POST["btn2"])) {
     if ($bool) {
         $bdd->add_team_tournoi($_POST["team"],$_POST['tournoi']);
     }
+}
+
+
+
+if (isset($_POST["btn7"])) {
+    $bool = True;
+
+    if (isset($_POST['tournoi']) && $_POST['tournoi'] == "") {
+        echo "Veuillez selectionner un tournoi";
+        $bool = False;
+    }
+    if ($bool) {
+        //include "bdd.php";
+    
+        $bdd = new BDD("localhost", "root", "", "z_tournament");
+    
+        $tournament_id = $_POST["tournoi"];
+        $equipes=$bdd->get_equipe_tournois_id($tournament_id);
+        $tab=array();
+        foreach ($equipes as $key => $values) {
+            array_push($tab,$values[0]);
+        }
+        
+        $bdd->set_liste_equipe($tab);
+        $nb_equipe=count($equipes);
+       
+        $bdd->create_tree($nb_equipe, $tournament_id);  
+    }
+
+    
 }
 
 

@@ -61,7 +61,7 @@
 
 <?php
 include_once("bdd.php");
-$bdd = new BDD("localhost", "root", "password", "TOURNOIS");
+$bdd = new BDD("localhost", "root", "", "z_tournament");
 
 if(isset($_POST["btn2"])){
     $bool=True;
