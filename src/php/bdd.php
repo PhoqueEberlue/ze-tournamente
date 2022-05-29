@@ -5,10 +5,10 @@ class BDD
     private $conn;
     private $liste_equipe;
 
-
     public function __construct($host, $username, $pswd, $db)
     {
         $this->conn = new mysqli($host, $username, $pswd, $db);
+        mysqli_set_charset($this->conn, 'utf8');
         if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
         }
@@ -30,6 +30,14 @@ class BDD
 
     private function insert($query)
     {
+        if ($this->conn->query($query) === TRUE) {
+            //echo "New record created successfully";
+        } else {
+            echo "Error: " . $query . "<br>" . $this->conn->error;
+        }
+    }
+
+    private function update($query){
         if ($this->conn->query($query) === TRUE) {
             //echo "New record created successfully";
         } else {
@@ -223,6 +231,19 @@ class BDD
 
     }
 
+    public function get_equipes_number($tournament_id)
+    {
+        $first_round = $this->getFirstRoundId($tournament_id);
+        $query = "SELECT count(id_match) as count FROM `match` 
+        WHERE round_match = '".$first_round."'
+        AND id_tournoi = ". $tournament_id;
+        $res = $this->select($query);
+        $row = $res->fetch_array();
+        $count = $row["count"];
+        return $count * 2;
+
+    }
+
     public function get_membres()
         /*
          * Récupère la liste des participants
@@ -237,6 +258,8 @@ class BDD
     }
 
     public function get_tournois(){
+
+
         $query = "SELECT id_tournoi, nom_tournoi, regle_tournoi FROM `tournoi`";
         $res = $this->select($query);
         return $res->fetch_all();
@@ -250,6 +273,24 @@ class BDD
                   WHERE round_match = ". $round_match . " and id_tournoi = ". $id_tournoi;
         $res = $this->select($query);
         return $res->fetch_all();
+    }
+
+    public function get_all_matchs($id_tournoi){
+        $query = "SELECT id_match, equipe1_match, equipe2_match, score_equipe1_match, score_equipe2_match, round_match, 
+        id_parent_match, type_match 
+        FROM `MATCH`
+        WHERE id_tournoi = ". $id_tournoi."  and score_equipe1_match is NULL and score_equipe2_match is NULL";
+        $res = $this->select($query);
+        return $res->fetch_all();
+    }
+
+    public function get_equipe_name($id_equipe_temp){
+        $query = "SELECT id_equipe,nom_equipe
+        FROM equipe
+        WHERE id_equipe='".$id_equipe_temp."'";
+        $res = $this->select($query);
+        $row=$res->fetch_array();
+        return $row[1];
     }
 
     public function get_equipe($id_equipe) {
@@ -275,5 +316,108 @@ class BDD
         $res = $this->select($query);
         return $res->fetch_array();
     }
+
+    public function getFirstRoundId($tournament_id) {
+        $query = "SELECT DISTINCT max(round_match) as round
+                  FROM `MATCH` 
+                  WHERE id_tournoi = ". $tournament_id;
+        $res = $this->select($query);
+        $row = $res->fetch_array();
+        $round = $row["round"];
+        return $round;
+    }
+
+    public function get_equipe_tournois_id($tournament_id){
+        $query="SELECT p.id_equipe FROM
+        equipe p
+        JOIN participer pe ON p.id_equipe=pe.id_equipe
+        WHERE pe.id_tournoi='".$tournament_id."'";
+        $res=$this->select($query);
+        
+        $row = $res->fetch_all();
+        
+        
+        return $row;
+
+    }
+
+
+
+    /* UPDATE FUNCTIONS */
+
+    public function  update_match($id_match,$score1,$score2){
+        $query="SELECT id_parent_match from `match` where id_match=".$id_match."";
+        $res=$this->select($query);
+        $row = $res->fetch_all();
+        $id_parent=$row[0][0];
+        if($id_parent!=null){
+            $query="UPDATE `match`
+            SET score_equipe1_match=".$score1.",score_equipe2_match=".$score2." WHERE
+            id_match=".$id_match."";
+            $this->update($query);
+
+            $gagnant=0;
+    
+            if($score1>$score2){
+                $gagnant=$score1;
+                $query="SELECT equipe1_match from `match` where id_match=".$id_match."";
+            }else if($score1<$score2){
+                $gagnant=$score2;
+                $query="SELECT equipe2_match from `match` where id_match=".$id_match."";
+            }
+
+            $res=$this->select($query);
+            $row = $res->fetch_all();
+            $winner=$row[0][0];
+
+
+            $query="SELECT score_equipe1_match,score_equipe2_match FROM `match` where id_match=".$id_parent."  ";
+      
+            $res=$this->select($query);
+            $row = $res->fetch_all();
+           
+
+
+            if($row[0][0]==NULL && $row[0][1]==Null){
+                if($gagnant==$score1){
+                    $query="UPDATE  `match`
+                    SET equipe1_match=".$winner." 
+                    WHERE id_match=".$id_parent."";
+                }elseif ($gagnant==$score2) {
+                    $query="UPDATE  `match`
+                    SET equipe2_match=".$winner." 
+                    WHERE id_match=".$id_parent."";
+                }
+
+            }elseif ($row[0][0]==NULL) {
+                $query="UPDATE  `match`
+                SET equipe1_match=".$winner." 
+                WHERE id_match=".$id_parent."";
+            }
+            elseif ($row[0][1]==NULL) {
+                $query="UPDATE  `match `
+                SET equipe2_match=".$winner." 
+                WHERE id_match=".$id_parent."";
+            }
+            $this->update($query);
+
+        }else{
+            $query="UPDATE `match`
+            SET score_equipe1_match=".$score1.",score_equipe2_match=".$score2." WHERE
+            id_match=".$id_match."";
+            $this->update($query);
+
+            $gagnant=0;
+
+        }
+
+
+       
+        
+
+        return 0;
+
+    }
+
 }
 ?>

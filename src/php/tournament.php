@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/Mainpage.css"/>
+    <link rel="stylesheet" href="../css/jquery.bracket.min.css"/>
     <title>Ze Tournamente</title>
 </head>
 <body class="body">
@@ -14,48 +15,63 @@
 </div>
 <div id="contentlmao">
     <div id="main">
-    <div id="menu">
-            <div id="box"><a href="form_player.php" class="btn_menu">Création joueur</a></div>
-            <div id="box"><a href="form_equipe.php" class="btn_menu">Création Equipe</a></div>
-            <div id="box"><a href="Mainpage.php" class="btn_menuacceuil" ><img src="https://icon-library.com/images/home-logo-icon/home-logo-icon-0.jpg"></a></div>  
-            <div id="box"><a href="form_add_team.php" class="btn_menu ">Création Tournois</a></div>   
-            <div id="box"><a href="tournament.php" class="btn_menu">Ze Tournamente</a></div> 
+        <div id="menu">
+                <div id="box"><a href="form_player.php" class="btn_menu">Création joueur</a></div>
+                <div id="box"><a href="form_equipe.php" class="btn_menu">Création Equipe</a></div>
+                <div id="box"><a href="Mainpage.php" class="btn_menuacceuil" ><img src="https://icon-library.com/images/home-logo-icon/home-logo-icon-0.jpg"></a></div>  
+                <div id="box"><a href="form_add_team.php" class="btn_menu ">Création Tournois</a></div>   
+                <div id="box"><a href="tournament.php" class="btn_menu">Ze Tournamente</a></div> 
         </div>
 
-        
+        <h3>Listes des tournois</h3>
+        <h3>  
+            <?php
+            get_all_tournois();
+        ?>
+        </h3>
+
+      
     </div>
+        
+
+
 </div>
 
 
-<form action="form.php" method="post">
-        <form-panel id ="panel">
-            <form-header id="Formheader">
-                <h3>Ajout d'un tournoi :</h3>
-            </form-header>
-
-            <form-content>
-                <form-group class="group">
-                    <label for="nomTournoi">Nom :</label>
-                    <input type="text" name="nomTournoi" id="nomTournoi" />
-                </form-group>
-            
-                <form-group class="group">
-                    <label for="regle">Regle :</label>
-                    <input type="text" name="regle" id="regle" />
-                </form-group>
-
-                <form-group class="group">
-                    <input type="submit" name="btn4" value="Ajouter" />
-                </form-group>
-            </form-content>
-        </form-panel>
-
-    </form>
 </body>
 </html>
 
+
 <?php
-echo"test";
+
+
+function get_all_tournois(){
+    include "bdd.php";
+
+    $bdd = new BDD("localhost", "root", "", "z_tournament");
+
+    $requete="SELECT id_tournoi,nom_tournoi from tournois";
+    $res=$bdd->get_tournois();
+    
+    $str="<ul>";
+
+    foreach ($res as $key => $value) {
+
+        $str.="<li><a href='tournament_tps_reel.php?id=".$value[0]."'> ".$value[1]."</a></li>";
+    }
+
+  
+    $str.="</ul>";
+
+    echo $str;
+
+}
+
+
+
+
+
 
 
 ?>
+

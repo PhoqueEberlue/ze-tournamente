@@ -79,7 +79,7 @@ $bdd = new BDD("localhost", "root","", "z_tournament");
 
 
         
-        <form action="form_add_team.php" method="post">
+        <form action="form_equipe.php" method="post">
                 <form-panel id="panel">
                     <form-header id="Formheader">
                         <h3>Ajout d'un membre dans une equipe :</h3>
@@ -112,7 +112,7 @@ $bdd = new BDD("localhost", "root","", "z_tournament");
                         </form-group>
 
                         <form-group class="group">
-                            <input type="submit" name="btn1" value="Ajouter"/>
+                            <input type="submit" name="btn6" value="Ajouter"/>
                         </form-group>
                     </form-content>
                 </form-panel>
@@ -150,7 +150,7 @@ if(isset($_POST["btn3"])){
     }
 }
 
-if (isset($_POST["btn1"])) {
+if (isset($_POST["btn6"])) {
     $bool = True;
     if (isset($_POST["equipe"]) && $_POST["equipe"] == "") {
         echo "Veuillez selectionner un nom <br>";
