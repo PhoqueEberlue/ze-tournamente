@@ -166,9 +166,7 @@
                                 <option value="">Choisir un match</option>
                                 <?php
                                 $bdd=new BDD("localhost","root","","z_tournament");
-                                $t = $bdd->get_all_matchs($tournament_id);
-                                echo json_encode($teams);    
-                                echo json_encode($results);                            
+                                $t = $bdd->get_all_matchs($tournament_id);                    
                                 foreach ($t as $match) {
                                     $res=$bdd->get_equipe_name($match[1]);
                                     $res2=$bdd->get_equipe_name($match[2]);
@@ -190,12 +188,16 @@
                         </form-group>
 
                         <form-group class="group">
-                            <input type="submit" name="btn7" value="Actuzliser" />
+                            <input type="submit" name="btn7" value="Actualiser" />
                         </form-group>
                     </form-content>
                 </form-panel>
 
             </form>
+
+            <h2>
+                <?php echo $str_error; ?>
+            </h2>
 
     </div>
         
@@ -233,17 +235,18 @@
 
 if(isset($_POST["btn7"])){
     $bool=true;
+    $str_error="";
     if (isset($_POST["match_select"]) && $_POST["match_select"] == "Choisir un match") {
-        echo "Veuillez selectionner un match <br>";
+        $str_error.="Veuillez selectionner un match <br>";
         $bool = False;
     }
     if (isset($_POST["s_eq1"]) && $_POST["s_eq1"] == "") {
-        echo "Veuillez mettre un score a l'equipe 1<br>";
+        $str_error.="Veuillez mettre un score a l'equipe 1<br>";
         $bool = False;
     }
 
     if (isset($_POST["s_eq2"]) && $_POST["s_eq2"] == "") {
-        echo "Veuillez mettre un score a l'equipe 2<br>";
+        $str_error.="Veuillez mettre un score a l'equipe 2<br>";
         $bool = False;
     }
 
@@ -252,7 +255,11 @@ if(isset($_POST["btn7"])){
 
         $bdd = new BDD("localhost", "root", "", "z_tournament");
         $bdd->update_match($_POST["match_select"],$_POST["s_eq1"],$_POST["s_eq2"]);
-        header("Refresh");
+        //echo "<meta http-equiv='refresh' content='0'>";
+        
+
+    }else{
+        echo "<h2 style='color:white'>".$str_error."</h2>";
     }
     
 }

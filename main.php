@@ -1,5 +1,5 @@
 <?php  
 
 
-include_once("src/php/Mainpage.php")
+header('Location: src/php/Mainpage.php');
 ?>

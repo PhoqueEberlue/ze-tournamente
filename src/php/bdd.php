@@ -45,6 +45,14 @@ class BDD
         }
     }
 
+    private function delete($query){
+        if ($this->conn->query($query) === TRUE) {
+            //echo "New record created successfully";
+        } else {
+            echo "Error: " . $query . "<br>" . $this->conn->error;
+        }
+    }
+
     // ------------------------ INSERT FUNCTIONS ------------------------
     public function add_tournoi($nom_tournoi)
         /*
@@ -342,6 +350,19 @@ class BDD
     }
 
 
+    public function get_number_match_tournoi($tournament_id){
+        $sql="SELECT * FROM `match` where id_tournoi=".$tournament_id."";
+        
+        $res=$this->select($sql);
+
+        $row=$res->fetch_array();
+        
+        
+        return $row;
+
+    }
+
+
 
     /* UPDATE FUNCTIONS */
 
@@ -371,34 +392,28 @@ class BDD
             $winner=$row[0][0];
 
 
-            $query="SELECT score_equipe1_match,score_equipe2_match FROM `match` where id_match=".$id_parent."  ";
+            $query="SELECT equipe1_match,equipe2_match FROM `match` where id_match=".$id_parent."  ";
       
             $res=$this->select($query);
-            $row = $res->fetch_all();
+            $row = $res->fetch_array();
+
+    
            
 
 
-            if($row[0][0]==NULL && $row[0][1]==Null){
-                if($gagnant==$score1){
+            if($row[0]==NULL && $row[1]==Null){
+                    
                     $query="UPDATE  `match`
                     SET equipe1_match=".$winner." 
                     WHERE id_match=".$id_parent."";
-                }elseif ($gagnant==$score2) {
-                    $query="UPDATE  `match`
-                    SET equipe2_match=".$winner." 
-                    WHERE id_match=".$id_parent."";
-                }
-
-            }elseif ($row[0][0]==NULL) {
-                $query="UPDATE  `match`
-                SET equipe1_match=".$winner." 
-                WHERE id_match=".$id_parent."";
             }
-            elseif ($row[0][1]==NULL) {
-                $query="UPDATE  `match `
+            elseif ($row[1]==NULL) {
+           
+                $query="UPDATE  `match`
                 SET equipe2_match=".$winner." 
                 WHERE id_match=".$id_parent."";
             }
+            
             $this->update($query);
 
         }else{
@@ -417,6 +432,19 @@ class BDD
 
         return 0;
 
+    }
+
+    /* DELETE */
+    public function delete_tournois($id_tournoi){
+        $sql="DELETE FROM tournoi where id_tournoi =".$id_tournoi."";
+        $this->delete($sql);
+        $sql="DELETE FROM participer where id_tournoi =".$id_tournoi."";
+        $this->delete($sql);
+        $sql="DELETE FROM `match` 
+        where id_tournoi =".$id_tournoi."";
+        $this->delete($sql);
+
+        
     }
 
 }

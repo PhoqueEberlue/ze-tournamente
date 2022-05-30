@@ -57,7 +57,7 @@ $bdd = new BDD("localhost", "root", "", "TOURNOIS");
             <form action="form_add_team.php" method="post">
                 <form-panel id ="panel">
                     <form-header id="Formheader">
-                        <h3>Remplissage d'un Tournoi' :</h3>
+                        <h3>Remplissage d'un Tournoi :</h3>
                     </form-header>
 
                     <form-content>
@@ -131,7 +131,36 @@ $bdd = new BDD("localhost", "root", "", "TOURNOIS");
 
             </form>
 
+            <form action="form_add_team.php" method="post">
+                <form-panel id ="panel">
+                    <form-header id="Formheader">
+                        <h3>Supprimer le tournois  :</h3>
+                    </form-header>
 
+                    <form-content>
+                    <form-group class="group">
+                        <select name="tournoi_suppr" id="tournoi_suppr">
+                                <option value="">Choisir un tournoi </option>
+                                <?php
+                                $bdd=new BDD("localhost","root","","z_tournament");
+                                $t = $bdd->get_tournois();
+                                
+                                foreach ($t as $tournoi) {
+                                    
+                                    echo "<option value='" . $tournoi[0] . "'>" . $tournoi[1] . "</option>\n";
+                                }
+                                
+                                ?>
+                            </select>
+                        </form-group>
+
+                        <form-group class="group">
+                            <input type="submit" name="btn8" value="Supprimer" />
+                        </form-group>
+                    </form-content>
+                </form-panel>
+
+            </form>
  
 
 
@@ -142,74 +171,110 @@ $bdd = new BDD("localhost", "root", "", "TOURNOIS");
 
     
     </body>
-    </html>
-
-<?php
-
-
-
-if (isset($_POST["btn4"])) {
-    $bool = True;
-    if (isset($_POST["nomTournoi"]) && $_POST["nomTournoi"] == "") {
-        echo "Veuillez ecrire un nom de tournoi <br>";
-        $bool = False;
-    }
-    if (isset($_POST['regle']) && $_POST['regle'] == "") {
-        echo "Veuillez ecrire une regle";
-        $bool = False;
-    }
-
-    if ($bool) {
-        $bdd->add_tournoi_complet($_POST["nomTournoi"],$_POST['regle']);
-    }
-}
-
-
-if (isset($_POST["btn2"])) {
-    $bool = True;
-    if (isset($_POST["team"]) && $_POST["team"] == "") {
-        echo "Veuillez selectionner une team <br>";
-        $bool = False;
-    }
-    if (isset($_POST['tournoi']) && $_POST['tournoi'] == "") {
-        echo "Veuillez selectionner un tournoi";
-        $bool = False;
-    }
-
-    if ($bool) {
-        $bdd->add_team_tournoi($_POST["team"],$_POST['tournoi']);
-    }
-}
-
-
-
-if (isset($_POST["btn7"])) {
-    $bool = True;
-
-    if (isset($_POST['tournoi']) && $_POST['tournoi'] == "") {
-        echo "Veuillez selectionner un tournoi";
-        $bool = False;
-    }
-    if ($bool) {
-        //include "bdd.php";
-    
-        $bdd = new BDD("localhost", "root", "", "z_tournament");
-    
-        $tournament_id = $_POST["tournoi"];
-        $equipes=$bdd->get_equipe_tournois_id($tournament_id);
-        $tab=array();
-        foreach ($equipes as $key => $values) {
-            array_push($tab,$values[0]);
-        }
         
-        $bdd->set_liste_equipe($tab);
-        $nb_equipe=count($equipes);
-       
-        $bdd->create_tree($nb_equipe, $tournament_id);  
+    <?php
+
+
+
+    if (isset($_POST["btn4"])) {
+        $str_error="";
+        $bool = True;
+        if (isset($_POST["nomTournoi"]) && $_POST["nomTournoi"] == "") {
+            $str_error.="Veuillez ecrire un nom de tournoi <br>";
+            $bool = False;
+        }
+        if (isset($_POST['regle']) && $_POST['regle'] == "") {
+            $str_error.="Veuillez ecrire une règle";
+            $bool = False;
+        }
+
+        if ($bool) {
+            $bdd->add_tournoi_complet($_POST["nomTournoi"],$_POST['regle']);
+            echo "<meta http-equiv='refresh' content='0'>";
+        }else{
+            echo "<h2 style='color:white'>".$str_error."</h2>";
+        }
     }
 
-    
-}
+
+    if (isset($_POST["btn2"])) {
+        $str_error="";
+        $bool = True;
+        if (isset($_POST["team"]) && $_POST["team"] == "") {
+            $str_error.="Veuillez selectionner une team <br>";
+            $bool = False;
+        }
+        if (isset($_POST['tournoi']) && $_POST['tournoi'] == "") {
+            $str_error.="Veuillez selectionner un tournoi";
+            $bool = False;
+        }
+
+        if ($bool) {
+            $bdd->add_team_tournoi($_POST["team"],$_POST['tournoi']);
+            echo "<meta http-equiv='refresh' content='0'>";
+        }else{
+            echo "<h2 style='color:white'>".$str_error."</h2>";
+        }
+    }
 
 
-?>
+
+    if (isset($_POST["btn7"])) {
+        $str_error="";
+        $bool = True;
+
+        if (isset($_POST['tournoi']) && $_POST['tournoi'] == "") {
+            $str_error.="Veuillez selectionner un tournoi";
+            $bool = False;
+        }
+        if ($bool) {
+            //include "bdd.php";
+        
+            $bdd = new BDD("localhost", "root", "", "z_tournament");
+        
+            $tournament_id = $_POST["tournoi"];
+            $equipes=$bdd->get_equipe_tournois_id($tournament_id);
+            $tab=array();
+            foreach ($equipes as $key => $values) {
+                array_push($tab,$values[0]);
+            }
+            
+            $bdd->set_liste_equipe($tab);
+            $nb_equipe=count($equipes);
+        
+            $bdd->create_tree($nb_equipe, $tournament_id);  
+            echo "<meta http-equiv='refresh' content='0'>";
+        }else{
+            echo "<h2 style='color:white'>".$str_error."</h2>";
+        }
+
+        
+    }
+
+    if(isset($_POST["btn8"])){
+        $str_error="";
+        $bool = True;
+
+        if (isset($_POST['tournoi_suppr']) && $_POST['tournoi_suppr'] == "") {
+            $str_error.="Veuillez selectionner un tournoi";
+            $bool = False;
+        }
+        if ($bool) {
+            //include "bdd.php";
+        
+            $bdd = new BDD("localhost", "root", "", "z_tournament");
+        
+            $tournament_id = $_POST["tournoi_suppr"];
+
+            $bdd->delete_tournois($tournament_id);
+            echo "<meta http-equiv='refresh' content='0'>";
+            
+        }else{
+            echo "<h2 style='color:white'>".$str_error."</h2>";
+        }
+
+    }
+
+
+    ?>
+</html>
