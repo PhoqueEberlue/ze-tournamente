@@ -64,21 +64,25 @@ include_once("bdd.php");
 $bdd = new BDD("localhost", "root", "", "z_tournament");
 
 if(isset($_POST["btn2"])){
+    $str_error="";
     $bool=True;
     if(isset($_POST["nom"]) && $_POST["nom"]==""){
-        echo "Veuillez selectionner un nom <br>";
+        $str_error.="Veuillez selectionner un nom <br>";
         $bool=False;
     }
     if (isset($_POST['prenom']) && $_POST['prenom']=="") {
-        echo "Veuillez ecrire un prenom";
+        $str_error.="Veuillez ecrire un prenom <br>";
         $bool=False;
     }
     if(isset($_POST['pseudo']) && $_POST['pseudo']=="") {
-        echo "Veuillez ecrire un prenom";
+        $str_error.="Veuillez ecrire un prenom <br>";
         $bool=False;
     }
     if($bool){
         $bdd->add_player($_POST['pseudo'], $_POST['nom'], $_POST['prenom']);
+        echo "<meta http-equiv='refresh' content='0'>";
+    }else{
+        echo "<h2 style='color:white'>".$str_error."</h2>";
     }
 }
 ?>

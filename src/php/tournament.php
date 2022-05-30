@@ -56,8 +56,16 @@ function get_all_tournois(){
     $str="<ul>";
 
     foreach ($res as $key => $value) {
+      
+        $count=$bdd->get_number_match_tournoi($value[0]);
+        //var_dump($count);
+        if($count!=Null){
+            $str.="<li><a href='tournament_tps_reel.php?id=".$value[0]."'> ".$value[1]."</a></li>";
 
-        $str.="<li><a href='tournament_tps_reel.php?id=".$value[0]."'> ".$value[1]."</a></li>";
+        }
+
+
+
     }
 
   

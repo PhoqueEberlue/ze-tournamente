@@ -139,8 +139,6 @@ h1 {
     justify-content: center;
 }
 
-
-
 .overlay {
     position: absolute;
     top: 0;
@@ -202,7 +200,7 @@ input {
     transition: 0.3s ease;
 }
 
-select{
+select {
     outline: none;
     display: block;
     background: rgba(#000000, 0.1);

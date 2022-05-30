@@ -126,43 +126,55 @@ $bdd = new BDD("localhost", "root","", "z_tournament");
 <?php
 if(isset($_POST["btn1"])){
     $bool=True;
+    $str_error="";
     if(isset($_POST["activite"]) && $_POST["activite"]==""){
-        echo "Veuillez selectionner une activite <br>";
+        $str_error.="Veuillez selectionner une activite <br>";
         $bool=False;
     }if (isset($_POST['NomTeam']) && $_POST['NomTeam']=="") {
-        echo "Veuillez ecrire un nom d equipe";
+        $str_error.="Veuillez ecrire un nom d equipe <br>";
         $bool=False;
     }
     if($bool){
         $bdd->add_equipe($_POST['NomTeam'], $_POST['activite']);
+        echo "<meta http-equiv='refresh' content='0'>";
+    }else{
+        echo "<h2 style='color:white'>".$str_error."</h2>";
     }
     
 }
 
 if(isset($_POST["btn3"])){
     $bool=True;
+    $str_error="";
     if(isset($_POST["nomActivite"]) && $_POST["nomActivite"]==""){
-        echo "Veuillez selectionner une activite <br>";
+        $str_error.="Veuillez selectionner une activite <br>";
         $bool=False;
     }
     if($bool){
         $bdd->add_activite($_POST['nomActivite']);
+        echo "<meta http-equiv='refresh' content='0'>";
+    }else{
+        echo "<h2 style='color:white'>".$str_error."</h2>";
     }
 }
 
 if (isset($_POST["btn6"])) {
     $bool = True;
+    $str_error="";
     if (isset($_POST["equipe"]) && $_POST["equipe"] == "") {
-        echo "Veuillez selectionner un nom <br>";
+        $str_error.="Veuillez selectionner un nom <br>";
         $bool = False;
     }
     if (isset($_POST['membre']) && $_POST['membre'] == "") {
-        echo "Veuillez ecrire un prenom";
+        $str_error.="Veuillez ecrire un prenom <br>";
         $bool = False;
     }
 
     if ($bool) {
         $bdd->add_player_to_team($_POST['membre'], $_POST['equipe']);
+        echo "<meta http-equiv='refresh' content='0'>";
+    }else{
+        echo "<h2 style='color:white'>".$str_error."</h2>";
     }
 }
 ?>
