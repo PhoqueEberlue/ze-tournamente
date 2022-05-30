@@ -255,7 +255,7 @@ if(isset($_POST["btn7"])){
 
         $bdd = new BDD("localhost", "root", "", "z_tournament");
         $bdd->update_match($_POST["match_select"],$_POST["s_eq1"],$_POST["s_eq2"]);
-        //echo "<meta http-equiv='refresh' content='0'>";
+        echo "<meta http-equiv='refresh' content='0'>";
         
 
     }else{
