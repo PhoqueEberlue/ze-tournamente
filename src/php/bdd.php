@@ -287,7 +287,7 @@ class BDD
         $query = "SELECT id_match, equipe1_match, equipe2_match, score_equipe1_match, score_equipe2_match, round_match, 
         id_parent_match, type_match 
         FROM `MATCH`
-        WHERE id_tournoi = ". $id_tournoi."  and score_equipe1_match is NULL and score_equipe2_match is NULL";
+        WHERE id_tournoi = ". $id_tournoi."  and score_equipe1_match is NULL and score_equipe2_match is NULL and equipe1_match is NOT NULL and equipe2_match is NOT NULL";
         $res = $this->select($query);
         return $res->fetch_all();
     }
@@ -445,6 +445,13 @@ class BDD
         $this->delete($sql);
 
         
+    }
+
+    public function delete_membre($id_membre){
+        $sql="DELETE FROM participant where id_participant=".$id_membre."";
+        $this->delete($sql);
+        $sql="DELETE FROM est_membre where id_participant=".$id_membre."";
+        $this->delete($sql);
     }
 
 }

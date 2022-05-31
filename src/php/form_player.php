@@ -50,6 +50,35 @@
                 </form-content>
             </form-panel>
         </form>
+
+                
+        <form action="form_player.php" method="post">
+                <form-panel id="panel">
+                    <form-header id="Formheader">
+                        <h3>Suppression d'un membre :</h3>
+                    </form-header>
+
+                    <form-content>
+                        <form-group class="group" id="Choix">
+                            <select name="membre" id="membre">
+                                <option value="">Choisir un membre</option>
+                                <?php
+                                include_once("bdd.php");
+                                $bdd = new BDD("localhost", "root", "", "z_tournament");
+                                $membres = $bdd->get_membres();
+                                foreach ($membres as $membre) {
+                                    echo "<option value='" . $membre[0] . "'>" . $membre[1] . " " . $membre[2] . "</option>\n";
+                                }
+                                ?>
+                            </select>
+                        </form-group>
+
+                        <form-group class="group">
+                            <input type="submit" name="btn8" value="Supprimer"/>
+                        </form-group>
+                    </form-content>
+                </form-panel>
+            </form>
     
     </div>
     
@@ -84,5 +113,23 @@ if(isset($_POST["btn2"])){
     }else{
         echo "<h2 style='color:white'>".$str_error."</h2>";
     }
+}
+
+
+if(isset($_POST["btn8"])){
+    $str_error="";
+    $bool=True;
+    if(isset($_POST["membre"]) && $_POST["membre"]==""){
+        $str_error.="Veuillez selectionner un nom <br>";
+        $bool=False;
+    }
+
+    if($bool){
+        echo "test";
+        $bdd->delete_membre($_POST["membre"]);
+    }else{
+        echo "<h2 style='color:white'>".$str_error."</h2>";
+    }
+
 }
 ?>
