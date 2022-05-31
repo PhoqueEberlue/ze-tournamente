@@ -195,9 +195,6 @@
 
             </form>
 
-            <h2>
-                <?php echo $str_error; ?>
-            </h2>
 
     </div>
         
@@ -206,8 +203,8 @@
 </div>
 
 
-<script src="jquery.min.js"></script>
-<script src="jquery.bracket.min.js"></script>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/jquery.bracket.min.js"></script>
     <script>
 
 
